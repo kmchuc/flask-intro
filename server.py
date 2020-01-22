@@ -13,12 +13,15 @@ AWESOMENESS = [
     'oh-so-not-meh', 'brilliant', 'ducky', 'coolio', 'incredible',
     'wonderful', 'smashing', 'lovely']
 
+DISSES = [
+    'dumb', 'lazy', 'un-Pythonic', 'last-year-ay', 'gross', 'meh', 'basic']
+
 
 @app.route("/")
 def start_here():
     """Home page."""
 
-    return "<!doctype html><html>Hi! This is the home page.</html>"
+    return """<!doctype html><html><h1>Hi! This is the home page.<a href="/hello">Hello Page</a></h1></html>"""
 
 
 @app.route("/hello")
@@ -35,7 +38,26 @@ def say_hello():
         <h1>Hi There!</h1>
         <form action="/greet">
           What's your name? <input type="text" name="person">
+          <p>
+          Please select a compliment: 
+          <select name="compliment">
+            <option value="awesome">Awesome</option>
+            <option value="terrific">Terrific</option>
+            <option value="fantastic">Fantastic</option>
+            <option value="neato">Neato</option>
+            <option value="fantabulous">Fantabulous</option>
+            <option value="wowza">Wowza</option>
+            <option value="oh-so-not-meh">Oh-so-not-meh</option>
+            <option value="brilliant">Brilliant</option>
+            <option value="ducky">Ducky</option>
+            <option value="coolio">Coolio</option>
+            <option value="incredible">Incredible</option>
+            <option value="wonderful">Wonderful</option>
+            <option value="smashing">Smashing</option>
+            <option value="lovely">Lovely</option>
+           </select>
           <input type="submit" value="Submit">
+          </p>
         </form>
       </body>
     </html>
@@ -48,9 +70,9 @@ def greet_person():
 
     player = request.args.get("person")
 
-    compliment = choice(AWESOMENESS)
+    compliment = request.args.get("compliment")
 
-    y = x
+    # y = x
 
     return """
     <!doctype html>
@@ -65,7 +87,31 @@ def greet_person():
     """.format(player, compliment)
 
 
+@app.route("/diss")
+def diss_person():
+    """Diss user using name"""
+
+    player = request.args.get("person")
+
+    diss = choice(DISSES)
+
+    return f"""
+
+    <!doctype html>
+    <html>
+        <head>
+            <title>A Diss</title> 
+        </head>
+        <form action="/diss">
+        <body>
+        Hi, {player}! I think you're {diss}!
+        </body>
+    </html>
+    """    
+
+
+
 if __name__ == "__main__":
     # debug=True gives us error messages in the browser and also "reloads"
     # our web app if we change the code.
-    app.run(debug=False, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0")
